@@ -1,158 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Password Strength Checker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background-color: #f4f6f8;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background-color: #fff;
-      padding: 30px 25px;
-      border-radius: 16px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      margin-top: 0;
-      font-size: 22px;
-      font-weight: 600;
-      text-align: center;
-      color: #333;
-    }
-
-    input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      margin: 15px 0;
-      transition: border-color 0.3s;
-    }
-
-    input[type="password"]:focus {
-      outline: none;
-      border-color: #5a67d8;
-    }
-
-    .feedback {
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 12px;
-      color: #555;
-    }
-
-    .feedback.weak {
-      color: #e53e3e;
-    }
-
-    .feedback.medium {
-      color: #dd6b20;
-    }
-
-    .feedback.strong {
-      color: #38a169;
-    }
-
-    .progress-container {
-      background-color: #eee;
-      border-radius: 10px;
-      overflow: hidden;
-      height: 14px;
-    }
-
-    .strength-bar {
-      height: 100%;
-      width: 0%;
-      background-color: #ccc;
-      transition: width 0.3s ease;
-    }
-
-    .strength-bar.weak {
-      background-color: #e53e3e;
-    }
-
-    .strength-bar.medium {
-      background-color: #dd6b20;
-    }
-
-    .strength-bar.strong {
-      background-color: #38a169;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <h2>Password Strength Checker</h2>
-    <input type="password" id="password" placeholder="Enter password" />
-    <div id="feedback" class="feedback"></div>
-    <div class="progress-container">
-      <div id="strengthBar" class="strength-bar"></div>
-    </div>
-  </div>
-
-  <script>
-    const passwordInput = document.getElementById("password");
-    const feedback = document.getElementById("feedback");
-    const strengthBar = document.getElementById("strengthBar");
-
-    passwordInput.addEventListener("input", () => {
-      const password = passwordInput.value;
-      let score = 0;
-      let messages = [];
-
-      if (password.length >= 8) score++;
-      else messages.push("❌ At least 8 characters");
-
-      if (/[A-Z]/.test(password)) score++;
-      else messages.push("❌ One uppercase letter");
-
-      if (/[a-z]/.test(password)) score++;
-      else messages.push("❌ One lowercase letter");
-
-      if (/\d/.test(password)) score++;
-      else messages.push("❌ One number");
-
-      if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
-      else messages.push("❌ One special character");
-
-      // Set bar and feedback
-      strengthBar.className = "strength-bar";
-      if (score === 5) {
-        feedback.textContent = "✅ Very strong password!";
-        feedback.className = "feedback strong";
-        strengthBar.style.width = "100%";
-        strengthBar.classList.add("strong");
-      } else if (score >= 3) {
-        feedback.textContent = "⚠️ Medium strength:\n" + messages.join(" ");
-        feedback.className = "feedback medium";
-        strengthBar.style.width = "60%";
-        strengthBar.classList.add("medium");
-      } else {
-        feedback.textContent = "❌ Weak password:\n" + messages.join(" ");
-        feedback.className = "feedback weak";
-        strengthBar.style.width = "30%";
-        strengthBar.classList.add("weak");
+  <head>
+    <meta charset="UTF-8" />
+    <title>Password Strength Checker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
       }
-    });
-  </script>
 
-</body>
+      body {
+        background-color: #f4f6f8;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 30px 25px;
+        border-radius: 16px;
+        max-width: 420px;
+        width: 100%;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        margin-top: 0;
+        font-size: 22px;
+        font-weight: 600;
+        text-align: center;
+        color: #333;
+      }
+
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        margin: 15px 0;
+        transition: border-color 0.3s;
+      }
+
+      input[type="password"]:focus {
+        outline: none;
+        border-color: #5a67d8;
+      }
+
+      .feedback {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+        color: #555;
+      }
+
+      .feedback.weak {
+        color: #e53e3e;
+      }
+
+      .feedback.medium {
+        color: #dd6b20;
+      }
+
+      .feedback.strong {
+        color: #38a169;
+      }
+
+      .progress-container {
+        background-color: #eee;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 14px;
+      }
+
+      .strength-bar {
+        height: 100%;
+        width: 0%;
+        background-color: #ccc;
+        transition: width 0.3s ease;
+      }
+
+      .strength-bar.weak {
+        background-color: #e53e3e;
+      }
+
+      .strength-bar.medium {
+        background-color: #dd6b20;
+      }
+
+      .strength-bar.strong {
+        background-color: #38a169;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Password Strength Checker</h2>
+      <input type="password" id="password" placeholder="Enter password" />
+      <div id="feedback" class="feedback"></div>
+      <div class="progress-container">
+        <div id="strengthBar" class="strength-bar"></div>
+      </div>
+    </div>
+
+    <script>
+      const passwordInput = document.getElementById("password");
+      const feedback = document.getElementById("feedback");
+      const strengthBar = document.getElementById("strengthBar");
+
+      passwordInput.addEventListener("input", () => {
+        const password = passwordInput.value.trim();
+        let score = 0;
+        let messages = [];
+
+        // 🧼 Reset if input is empty
+        if (password.length === 0) {
+          feedback.textContent = "";
+          feedback.className = "feedback";
+          strengthBar.style.width = "0%";
+          strengthBar.className = "strength-bar";
+          return;
+        }
+
+        if (password.length >= 8) score++;
+        else messages.push("❌ At least 8 characters");
+
+        if (/[A-Z]/.test(password)) score++;
+        else messages.push("❌ One uppercase letter");
+
+        if (/[a-z]/.test(password)) score++;
+        else messages.push("❌ One lowercase letter");
+
+        if (/\d/.test(password)) score++;
+        else messages.push("❌ One number");
+
+        if (/[!@#$%^&*(),.?\":{}|<>]/.test(password)) score++;
+        else messages.push("❌ One special character");
+
+        // Update progress bar
+        strengthBar.className = "strength-bar";
+        if (score === 5) {
+          feedback.textContent = "✅ Very strong password!";
+          feedback.className = "feedback strong";
+          strengthBar.style.width = "100%";
+          strengthBar.classList.add("strong");
+        } else if (score >= 3) {
+          feedback.textContent = "⚠️ Medium strength: " + messages.join(" ");
+          feedback.className = "feedback medium";
+          strengthBar.style.width = "60%";
+          strengthBar.classList.add("medium");
+        } else {
+          feedback.textContent = "❌ Weak password: " + messages.join(" ");
+          feedback.className = "feedback weak";
+          strengthBar.style.width = "30%";
+          strengthBar.classList.add("weak");
+        }
+      });
+    </script>
+  </body>
 </html>
