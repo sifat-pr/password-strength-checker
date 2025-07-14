@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Password Strength Checker</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -14,154 +14,435 @@
       }
 
       body {
-        background-color: #f4f6f8;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
+        padding: 20px;
       }
 
       .container {
-        background-color: #fff;
-        padding: 30px 25px;
-        border-radius: 16px;
-        max-width: 420px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 40px 30px;
+        border-radius: 24px;
+        max-width: 450px;
         width: 100%;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 24px 24px 0 0;
       }
 
       h2 {
         margin-top: 0;
-        font-size: 22px;
-        font-weight: 600;
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 700;
         text-align: center;
-        color: #333;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .input-container {
+        position: relative;
+        margin-bottom: 25px;
       }
 
       input[type="password"] {
         width: 100%;
-        padding: 12px;
+        padding: 16px 20px;
+        padding-right: 50px;
         font-size: 16px;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        margin: 15px 0;
-        transition: border-color 0.3s;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        background: #fafafa;
+        color: #2d3748;
       }
 
       input[type="password"]:focus {
         outline: none;
-        border-color: #5a67d8;
+        border-color: #667eea;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
       }
 
-      .feedback {
+      .toggle-password {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #64748b;
+        transition: color 0.3s ease;
+      }
+
+      .toggle-password:hover {
+        color: #667eea;
+      }
+
+      .strength-indicator {
+        margin-bottom: 20px;
+      }
+
+      .strength-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
         font-size: 14px;
-        line-height: 1.5;
-        margin-bottom: 12px;
-        color: #555;
+        font-weight: 500;
       }
 
-      .feedback.weak {
-        color: #e53e3e;
+      .strength-text {
+        font-weight: 600;
+        transition: all 0.3s ease;
       }
 
-      .feedback.medium {
-        color: #dd6b20;
-      }
-
-      .feedback.strong {
-        color: #38a169;
+      .strength-score {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        background: #f1f5f9;
+        color: #64748b;
+        transition: all 0.3s ease;
       }
 
       .progress-container {
-        background-color: #eee;
-        border-radius: 10px;
+        background: #f1f5f9;
+        border-radius: 12px;
         overflow: hidden;
-        height: 14px;
+        height: 8px;
+        position: relative;
       }
 
       .strength-bar {
         height: 100%;
         width: 0%;
-        background-color: #ccc;
-        transition: width 0.3s ease;
+        background: linear-gradient(90deg, #e2e8f0, #cbd5e1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .strength-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+        animation: shimmer 2s infinite;
       }
 
       .strength-bar.weak {
-        background-color: #e53e3e;
+        background: linear-gradient(90deg, #fee2e2, #fecaca);
       }
 
       .strength-bar.medium {
-        background-color: #dd6b20;
+        background: linear-gradient(90deg, #fef3c7, #fde68a);
       }
 
       .strength-bar.strong {
-        background-color: #38a169;
+        background: linear-gradient(90deg, #dcfce7, #bbf7d0);
+      }
+
+      .strength-bar.very-strong {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+      }
+
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+
+      .requirements {
+        margin-top: 20px;
+      }
+
+      .requirements-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 12px;
+      }
+
+      .requirement-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 13px;
+        transition: all 0.3s ease;
+      }
+
+      .requirement-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .requirement-item.met {
+        color: #059669;
+      }
+
+      .requirement-item.met .requirement-icon {
+        background: #dcfce7;
+        color: #059669;
+      }
+
+      .requirement-item.unmet {
+        color: #9ca3af;
+      }
+
+      .requirement-item.unmet .requirement-icon {
+        background: #f3f4f6;
+        color: #9ca3af;
+      }
+
+      .strength-text.weak {
+        color: #dc2626;
+      }
+
+      .strength-text.medium {
+        color: #d97706;
+      }
+
+      .strength-text.strong {
+        color: #059669;
+      }
+
+      .strength-text.very-strong {
+        color: #667eea;
+      }
+
+      .strength-score.weak {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .strength-score.medium {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .strength-score.strong {
+        background: #dcfce7;
+        color: #059669;
+      }
+
+      .strength-score.very-strong {
+        background: #e0e7ff;
+        color: #667eea;
+      }
+
+      .password-tips {
+        margin-top: 25px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+      }
+
+      .tips-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+      }
+
+      .tips-content {
+        font-size: 12px;
+        color: #6b7280;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 30px 20px;
+          margin: 10px;
+        }
+
+        h2 {
+          font-size: 24px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h2>Password Strength Checker</h2>
-      <input type="password" id="password" placeholder="Enter password" />
-      <div id="feedback" class="feedback"></div>
-      <div class="progress-container">
-        <div id="strengthBar" class="strength-bar"></div>
+      
+      <div class="input-container">
+        <input type="password" id="password" placeholder="Enter your password" />
+        <button class="toggle-password" id="toggleBtn">👁️</button>
+      </div>
+
+      <div class="strength-indicator">
+        <div class="strength-label">
+          <span class="strength-text" id="strengthText">Enter password</span>
+          <span class="strength-score" id="strengthScore">0/5</span>
+        </div>
+        <div class="progress-container">
+          <div id="strengthBar" class="strength-bar"></div>
+        </div>
+      </div>
+
+      <div class="requirements">
+        <div class="requirements-title">Requirements:</div>
+        <div class="requirement-item unmet" id="req-length">
+          <div class="requirement-icon">•</div>
+          <span>At least 8 characters</span>
+        </div>
+        <div class="requirement-item unmet" id="req-uppercase">
+          <div class="requirement-icon">•</div>
+          <span>One uppercase letter</span>
+        </div>
+        <div class="requirement-item unmet" id="req-lowercase">
+          <div class="requirement-icon">•</div>
+          <span>One lowercase letter</span>
+        </div>
+        <div class="requirement-item unmet" id="req-number">
+          <div class="requirement-icon">•</div>
+          <span>One number</span>
+        </div>
+        <div class="requirement-item unmet" id="req-special">
+          <div class="requirement-icon">•</div>
+          <span>One special character</span>
+        </div>
+      </div>
+
+      <div class="password-tips">
+        <div class="tips-title">💡 Tips for a strong password:</div>
+        <div class="tips-content">
+          Use a mix of letters, numbers, and symbols. Avoid common words, personal information, and sequential patterns.
+        </div>
       </div>
     </div>
 
     <script>
       const passwordInput = document.getElementById("password");
-      const feedback = document.getElementById("feedback");
+      const toggleBtn = document.getElementById("toggleBtn");
+      const strengthText = document.getElementById("strengthText");
+      const strengthScore = document.getElementById("strengthScore");
       const strengthBar = document.getElementById("strengthBar");
 
-      passwordInput.addEventListener("input", () => {
-        const password = passwordInput.value.trim();
-        let score = 0;
-        let messages = [];
+      const requirements = {
+        length: document.getElementById("req-length"),
+        uppercase: document.getElementById("req-uppercase"),
+        lowercase: document.getElementById("req-lowercase"),
+        number: document.getElementById("req-number"),
+        special: document.getElementById("req-special")
+      };
 
-        // 🧼 Reset if input is empty
+      // Toggle password visibility
+      toggleBtn.addEventListener("click", () => {
+        const type = passwordInput.type === "password" ? "text" : "password";
+        passwordInput.type = type;
+        toggleBtn.textContent = type === "password" ? "👁️" : "🙈";
+      });
+
+      // Update requirement status
+      function updateRequirement(element, met) {
+        const icon = element.querySelector('.requirement-icon');
+        if (met) {
+          element.className = "requirement-item met";
+          icon.textContent = "✓";
+        } else {
+          element.className = "requirement-item unmet";
+          icon.textContent = "•";
+        }
+      }
+
+      // Check password strength
+      passwordInput.addEventListener("input", () => {
+        const password = passwordInput.value;
+        let score = 0;
+        const checks = {
+          length: password.length >= 8,
+          uppercase: /[A-Z]/.test(password),
+          lowercase: /[a-z]/.test(password),
+          number: /\d/.test(password),
+          special: /[!@#$%^&*(),.?\":{}|<>]/.test(password)
+        };
+
+        // Reset if empty
         if (password.length === 0) {
-          feedback.textContent = "";
-          feedback.className = "feedback";
+          strengthText.textContent = "Enter password";
+          strengthText.className = "strength-text";
+          strengthScore.textContent = "0/5";
+          strengthScore.className = "strength-score";
           strengthBar.style.width = "0%";
           strengthBar.className = "strength-bar";
+          
+          Object.keys(requirements).forEach(key => {
+            updateRequirement(requirements[key], false);
+          });
           return;
         }
 
-        if (password.length >= 8) score++;
-        else messages.push("❌ At least 8 characters");
+        // Update requirements
+        Object.keys(checks).forEach(key => {
+          if (checks[key]) score++;
+          updateRequirement(requirements[key], checks[key]);
+        });
 
-        if (/[A-Z]/.test(password)) score++;
-        else messages.push("❌ One uppercase letter");
-
-        if (/[a-z]/.test(password)) score++;
-        else messages.push("❌ One lowercase letter");
-
-        if (/\d/.test(password)) score++;
-        else messages.push("❌ One number");
-
-        if (/[!@#$%^&*(),.?\":{}|<>]/.test(password)) score++;
-        else messages.push("❌ One special character");
-
-        // Update progress bar
-        strengthBar.className = "strength-bar";
+        // Update strength indicator
+        strengthScore.textContent = `${score}/5`;
+        
+        let strengthLevel, strengthClass, barWidth;
+        
         if (score === 5) {
-          feedback.textContent = "✅ Very strong password!";
-          feedback.className = "feedback strong";
-          strengthBar.style.width = "100%";
-          strengthBar.classList.add("strong");
+          strengthLevel = "Very Strong";
+          strengthClass = "very-strong";
+          barWidth = "100%";
+        } else if (score >= 4) {
+          strengthLevel = "Strong";
+          strengthClass = "strong";
+          barWidth = "80%";
         } else if (score >= 3) {
-          feedback.textContent = "⚠️ Medium strength: " + messages.join(" ");
-          feedback.className = "feedback medium";
-          strengthBar.style.width = "60%";
-          strengthBar.classList.add("medium");
+          strengthLevel = "Medium";
+          strengthClass = "medium";
+          barWidth = "60%";
+        } else if (score >= 2) {
+          strengthLevel = "Weak";
+          strengthClass = "weak";
+          barWidth = "40%";
         } else {
-          feedback.textContent = "❌ Weak password: " + messages.join(" ");
-          feedback.className = "feedback weak";
-          strengthBar.style.width = "30%";
-          strengthBar.classList.add("weak");
+          strengthLevel = "Very Weak";
+          strengthClass = "weak";
+          barWidth = "20%";
         }
+
+        strengthText.textContent = strengthLevel;
+        strengthText.className = `strength-text ${strengthClass}`;
+        strengthScore.className = `strength-score ${strengthClass}`;
+        strengthBar.style.width = barWidth;
+        strengthBar.className = `strength-bar ${strengthClass}`;
       });
     </script>
   </body>
