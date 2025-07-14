@@ -43,6 +43,7 @@ git clone https://github.com/sifat-pr/password-strength-checker.git
 ## Deployment
 
 This project is deployed using GitHub Pages. You can access it through the link in the "Live Demo" section above.
+Or go through [HERE](https://sifat-pr.github.io/password-strength-checker/)
 
 ## License
 
