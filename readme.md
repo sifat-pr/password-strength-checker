@@ -21,7 +21,7 @@ This project provides a web interface where users can check the strength of thei
 
 ## Live Demo
 
-You can try out the password strength checker at: [GitHub Pages Link] (Once deployed)
+You can try out the password strength checker at: [View](https://sifat-pr.github.io/password-strength-checker/)
 
 ## Usage
 
